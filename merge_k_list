@@ -1,0 +1,77 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define F(i,L,R) for (int i = L; i < R; i++)
+
+struct ListNode{
+    int val;
+    ListNode* next;
+    ListNode(int v){
+        val = v;
+        next=NULL;
+    }
+};
+
+struct heapNode{
+    ListNode *cur;
+    int idx;
+    heapNode(ListNode* cp,int i){
+        cur = cp;
+        idx=i;
+    }
+};
+
+struct compare{
+    bool operator()(heapNode a,heapNode b){
+        return a.cur->val >=b.cur->val;
+    }
+};
+
+ListNode* mergeKLists(vector<ListNode*>& ptr) {
+        ListNode*head=NULL,*tail=NULL;
+        int k= ptr.size();
+        if(k==0)
+            return head;
+
+        priority_queue<heapNode,vector<heapNode>,compare> heap;
+
+        vector<ListNode*> ptrIdx(k);
+
+        for(int i=0;i<k;i++){
+            ptrIdx[i] = ptr[i];
+            if(ptrIdx[i]!=NULL)
+                heap.push( heapNode(ptrIdx[i],i));
+        }
+
+        if(heap.empty())
+            return head;
+        
+        head = tail = heap.top().cur;
+        int idx = heap.top().idx;
+        heap.pop();
+        
+        ptrIdx[idx] = ptrIdx[idx]->next;
+
+        if(ptrIdx[idx]!=NULL)
+            heap.push(heapNode(ptrIdx[idx],idx));
+
+        while(!heap.empty()){
+            ListNode* temp = heap.top().cur;
+            idx = heap.top().idx;
+            heap.pop();
+
+            tail->next = temp;
+            tail=tail->next;
+
+            ptrIdx[idx] = ptrIdx[idx]->next;
+
+            if(ptrIdx[idx]!=NULL)
+                heap.push( heapNode(ptrIdx[idx],idx));
+        }
+        return head;
+}
+
+int main(){
+    ListNode*head;
+    cout<<"Hello,World!"<<endl;
+    return 0;
+}
