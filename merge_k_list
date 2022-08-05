@@ -23,7 +23,7 @@ struct heapNode{
     }
 };
 
-//If we are using comaprator for user defined function
+//If we are using comaprator for user defined ds
 //We have to explicitely define it. 
 struct compare{
     bool operator()(heapNode a,heapNode b){
